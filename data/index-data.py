@@ -26,7 +26,6 @@ def data_generator(file_json, index, pipeline):
         doc["_run_ml_inference"] = True
         yield {
             "_index": index,
-            "pipeline": pipeline,
             "_source": doc,
         }
 
@@ -50,7 +49,7 @@ success_count = 0
 
 for ok, info in helpers.streaming_bulk(
     client=es,
-    actions=data_generator(file_json, args.index_name, args.index_name),
+    actions=data_generator(file_json, args.index_name),
     raise_on_error=False,
 ):
     if ok:
