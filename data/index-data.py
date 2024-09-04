@@ -29,7 +29,7 @@ def data_generator(file_json, index):
         }
         yield {
             "_index": index,
-            "_source": filtered_doc,
+            "_source": doc,
         }
 
 
