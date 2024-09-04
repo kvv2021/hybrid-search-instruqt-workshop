@@ -10,7 +10,7 @@ parser.add_argument(
 )
 parser.add_argument("--es_user", dest="es_user", required=False, default="elastic")
 parser.add_argument("--es_password", dest="es_password", required=True)
-parser.add_argument("--cloud_id", dest="cloud_id", required=True)
+parser.add_argument("--es_url", dest="es_url", required=True)
 parser.add_argument(
     "--index_name", dest="index_name", required=False, default="search-movies"
 )
@@ -21,17 +21,21 @@ parser.add_argument(
 args = parser.parse_args()
 
 
-def data_generator(file_json, index, pipeline):
+def data_generator(file_json, index):
     for doc in file_json:
+        filtered_doc = {
+            "overview": doc.get("overview"),
+            "title": doc.get("title")
+        }
         yield {
             "_index": index,
-            "_source": doc,
+            "_source": filtered_doc,
         }
 
 
 print("Init Elasticsearch client")
 es = Elasticsearch(
-    cloud_id=args.cloud_id,
+    hosts=[args.es_url], 
     basic_auth=(args.es_user, args.es_password),
     request_timeout=600,
 )
