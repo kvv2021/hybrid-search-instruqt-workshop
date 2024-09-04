@@ -23,7 +23,6 @@ args = parser.parse_args()
 
 def data_generator(file_json, index, pipeline):
     for doc in file_json:
-        doc["_run_ml_inference"] = True
         yield {
             "_index": index,
             "_source": doc,
